@@ -1,0 +1,24 @@
+{
+  "name": "pfad-des-paradoxons-app",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "docker-compose up --build",
+    "api:migrate": "pnpm --filter api prisma migrate dev",
+    "test": "pnpm workspaces run test",
+    "lint": "pnpm workspaces run lint",
+    "fmt": "pnpm workspaces run fmt"
+  },
+  "workspaces": [
+    "apps/*",
+    "infra/*",
+    "prisma",
+    "docs"
+  ],
+  "devDependencies": {
+    "eslint": "8.x",
+    "prettier": "2.x",
+    "husky": "8.x",
+    "lint-staged": "13.x"
+  }
+}

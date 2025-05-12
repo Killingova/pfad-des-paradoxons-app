@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  auth_db:
+    image: postgres:16
+    ports: ["5433:5432"]
+  payments_db:
+    image: postgres:16
+    ports: ["5434:5432"]
+  content_db:
+    image: postgres:16
+    ports: ["5435:5432"]
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  mailhog:
+    image: mailhog/mailhog
+    ports: ["8025:8025"]
+  api:
+    build: ./apps/api
+    ports: ["4000:4000"]
+    depends_on: [auth_db, payments_db, content_db, redis]
+  web:
+    build: ./apps/web
+    ports: ["5173:80"]
+    depends_on: [api]
+volumes:
+  auth_data: {}
+  payments_data: {}
+  content_data: {}
