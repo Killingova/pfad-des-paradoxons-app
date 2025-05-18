@@ -1,2 +1,2 @@
 // apps/api/src/global.d.ts
-declare module 'csurf';
+declare module 'csurf'

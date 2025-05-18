@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../apps/api/node_modules/.prisma/payments"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_PAYMENTS")
+}
+
+model Subscription {
+  id        String   @id @default(uuid())
+  userId    String         // User-Referenz als String!
+  plan      String
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Invoice {
+  id        String   @id @default(uuid())
+  userId    String         // User-Referenz als String!
+  amount    Float
+  currency  String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+}
+
+model WebhookLog {
+  id         String   @id @default(uuid())
+  eventType  String
+  payload    String
+  receivedAt DateTime @default(now())
+}

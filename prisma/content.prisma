@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../apps/api/node_modules/.prisma/content"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_CONTENT")
+}
+
+model Card {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Article {
+  id        String   @id @default(uuid())
+  title     String
+  body      String
+  authorId  String         // User-Referenz als String!
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id         String   @id @default(uuid())
+  filename   String
+  url        String
+  uploadedAt DateTime @default(now())
+}

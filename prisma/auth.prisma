@@ -21,8 +21,8 @@ model User {
 }
 
 model Role {
-  id    String @id @default(uuid())
-  name  String @unique
+  id    String   @id @default(uuid())
+  name  String   @unique
   users User[]
 }
 

@@ -1,29 +1,75 @@
 version: "3.9"
+
 services:
   auth_db:
-    image: postgres:16
-    ports: ["5433:5432"]
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"
+    volumes:
+      - auth_data:/var/lib/postgresql/data
+
   payments_db:
-    image: postgres:16
-    ports: ["5434:5432"]
+    image: postgres:16-alpine
+    ports:
+      - "5434:5432"
+    volumes:
+      - payments_data:/var/lib/postgresql/data
+
   content_db:
-    image: postgres:16
-    ports: ["5435:5432"]
+    image: postgres:16-alpine
+    ports:
+      - "5435:5432"
+    volumes:
+      - content_data:/var/lib/postgresql/data
+
   redis:
     image: redis:7-alpine
-    ports: ["6379:6379"]
+    ports:
+      - "6379:6379"
+
   mailhog:
     image: mailhog/mailhog
-    ports: ["8025:8025"]
+    ports:
+      - "8025:8025"
+
   api:
-    build: ./apps/api
-    ports: ["4000:4000"]
-    depends_on: [auth_db, payments_db, content_db, redis]
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - auth_db
+      - payments_db
+      - content_db
+      - redis
+    environment:
+      NODE_ENV: production
+
   web:
-    build: ./apps/web
-    ports: ["5173:80"]
-    depends_on: [api]
+    build:
+      context: ./apps/web
+      # wenn du dort ein eigenes Dockerfile nutzt, kannst du es angeben:
+      # dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://api:4000
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - web
+
 volumes:
-  auth_data: {}
-  payments_data: {}
-  content_data: {}
+  auth_data:
+  payments_data:
+  content_data:

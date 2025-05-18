@@ -134,3 +134,26 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+# Node Modules
+node_modules/
+
+# Build Output
+dist/
+build/
+
+# Swap Files
+*.swp
+
+# Environment Files
+.env
+.env.local
+
+# Docker Artifacts
+apps/api/.dockerignore
+apps/api/Dockerfile
+
+# pnpm Config
+.npmrc
+
+# Prisma Generated Clients
+prisma/.content.prisma.swp

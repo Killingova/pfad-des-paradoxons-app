@@ -1,0 +1,50 @@
+{
+  "name": "pfad-des-paradoxons-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint ./src --ext .ts,.tsx",
+    "lint:fix": "eslint ./src --ext .ts,.tsx --fix",
+    "format": "prettier --write ./src",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.21",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.8",
+    "eslint": "^8.52.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.9.0",
+    "prettier": "^3.2.0",
+    "vitest": "^0.30.1",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0"
+  },
+  "eslintConfig": {
+    "extends": ["airbnb", "airbnb/hooks", "plugin:react/recommended", "plugin:prettier/recommended"],
+    "plugins": ["react"],
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "import/no-extraneous-dependencies": "off",
+      "no-console": "warn"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "tabWidth": 2,
+    "printWidth": 80,
+    "endOfLine": "lf"
+  }
+}
