@@ -10,17 +10,21 @@
   ],
   "scripts": {
     "dev": "docker-compose up --build",
+    "build": "pnpm -r run build",
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix",
     "format": "pnpm -r run format",
     "test": "pnpm -r run test"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "4.4.1",
     "eslint": "^8.x",
     "husky": "^8.x",
     "lint-staged": "^13.x",
     "prettier": "^2.x",
-    "typescript": "^5.8.3"
+    "rollup": "4.41.0",
+    "typescript": "^5.8.3",
+    "vite": "5.4.19"
   },
   "husky": {
     "hooks": {
