@@ -1,11 +1,11 @@
-generator client {
-  provider = "prisma-client-js"
-  output   = "../apps/api/node_modules/.prisma/content"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL_CONTENT")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../apps/api/node_modules/.prisma/content"
 }
 
 model Card {
@@ -13,6 +13,7 @@ model Card {
   title     String
   content   String
   imageUrl  String?
+  userId    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -20,9 +21,8 @@ model Card {
 model Article {
   id        String   @id @default(uuid())
   title     String
-  body      String
-  authorId  String         // User-Referenz als String!
-  published Boolean  @default(false)
+  content   String
+  authorId  String?  // Verweis auf User, aber User ist in auth.prisma definiert
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

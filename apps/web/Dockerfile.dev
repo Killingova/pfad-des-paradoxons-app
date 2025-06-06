@@ -1,0 +1,15 @@
+# ─── apps/web/Dockerfile.dev (Development) ───────────────────────────────────
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Nur für schnelles Dev, keine Builds! Volumes werden gemountet!
+COPY package.json tsconfig.json vite.config.ts ./
+
+RUN npm install -g pnpm && pnpm install
+
+# Hot-Reload mit Vite auf Port 5173
+EXPOSE 5173
+
+CMD ["pnpm", "run", "dev"]

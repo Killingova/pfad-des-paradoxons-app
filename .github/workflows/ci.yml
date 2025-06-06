@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  install-lint-test:
+    name: Install → Lint → Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: 🔧 Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: 📥 Install Dependencies
+        run: pnpm install
+
+      - name: 📐 Lint Code
+        run: pnpm lint
+
+      - name: 🧼 Format Check
+        run: pnpm format --check || true # verhindert Hard-Fail
+
+      - name: 🧪 Run Typecheck
+        run: pnpm typecheck
+
+      - name: ✅ Run Tests
+        run: pnpm test

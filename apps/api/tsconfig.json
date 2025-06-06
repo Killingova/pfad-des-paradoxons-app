@@ -1,22 +1,24 @@
+// ─── apps/api/tsconfig.json ───────────────────────────────────────────────────
+
 {
   "compilerOptions": {
     "target": "ES2021",
     "module": "CommonJS",
     "strict": true,
-    "outDir": "dist",
-    "rootDir": "src",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "noImplicitAny": true,
     "resolveJsonModule": true,
-    "baseUrl": "./",
+    "sourceMap": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["node", "jest"]
+    "types": ["node", "vitest"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "tests"]
+  "exclude": ["node_modules", "dist", "test"]
 }

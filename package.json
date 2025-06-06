@@ -1,7 +1,7 @@
 {
   "name": "pfad-des-paradoxons-app",
-  "private": true,
   "version": "0.0.1",
+  "private": true,
   "workspaces": [
     "apps/*",
     "infra/*",
@@ -11,20 +11,34 @@
   "scripts": {
     "dev": "docker-compose up --build",
     "build": "pnpm -r run build",
-    "lint": "pnpm -r run lint",
-    "lint:fix": "pnpm -r run lint:fix",
-    "format": "pnpm -r run format",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write .",
+    "prepare": "husky install",
     "test": "pnpm -r run test"
   },
+  "dependencies": {
+    "@prisma/client": "6.8.2",
+    "dotenv": "^16.5.0",
+    "prisma": "6.8.2"
+  },
   "devDependencies": {
-    "@vitejs/plugin-react": "4.4.1",
-    "eslint": "^8.x",
-    "husky": "^8.x",
-    "lint-staged": "^13.x",
-    "prettier": "^2.x",
-    "rollup": "4.41.0",
+    "@types/node": "^22.15.29",
+    "@typescript-eslint/eslint-plugin": "^8.33.0",
+    "@typescript-eslint/parser": "^8.33.0",
+    "@vitejs/plugin-react": "4.5.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.3.0",
+    "prettier": "^2.8.8",
+    "rollup": "4.41.1",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3",
-    "vite": "5.4.19"
+    "vite": "6.3.5"
   },
   "husky": {
     "hooks": {
@@ -32,17 +46,9 @@
     }
   },
   "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.tsx": [
+    "**/*.{ts,tsx,js,jsx}": [
       "eslint --fix",
       "prettier --write"
     ]
-  },
-  "dependencies": {
-    "@prisma/client": "6.8.2",
-    "prisma": "6.8.2"
   }
 }

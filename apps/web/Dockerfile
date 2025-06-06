@@ -1,27 +1,26 @@
-# Docker-Image: Node.js in schlanker Alpine-Version
-FROM node:18-alpine
+# ─── apps/web/Dockerfile (Production) ────────────────────────────────────────
 
-# Arbeitsverzeichnis im Container setzen
+# 1. Build-Stage: Erzeuge statische Assets
+FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-# Kopiere zuerst package.json (und package-lock.json, falls vorhanden)
-# Das beschleunigt das Docker-Build, weil npm install gecached werden kann
-COPY package.json ./
-# TypeScript- und Vite-Konfigs ebenfalls kopieren
-COPY tsconfig.json ./
-COPY vite.config.ts ./
-
-# Kopiere den Public-Ordner (statische Assets, z.B. index.html)
-COPY src/public ./public
-
-# Kopiere den Source-Code
+# Nur was zum Bauen gebraucht wird kopieren!
+COPY package.json tsconfig.json vite.config.ts ./
+COPY public ./public
 COPY src ./src
 
-# Installiere die Dependencies
 RUN npm install
+RUN npm run build
 
-# Vite-Dev-Server-Port öffnen
-EXPOSE 5173
+# 2. Production-Stage: NGINX zum Ausliefern der gebauten statischen Seite
+FROM nginx:alpine AS runner
 
-# Starte den Entwicklungsserver – mit "--host", damit der Container auch von außen erreichbar ist
-CMD ["npm", "run", "dev", "--", "--host"]
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+
+COPY --from=builder /app/dist ./
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

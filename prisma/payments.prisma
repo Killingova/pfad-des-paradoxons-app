@@ -1,16 +1,16 @@
-generator client {
-  provider = "prisma-client-js"
-  output   = "../apps/api/node_modules/.prisma/payments"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL_PAYMENTS")
 }
 
+generator client {
+  provider = "prisma-client-js"
+  output   = "../apps/api/node_modules/.prisma/payments"
+}
+
 model Subscription {
   id        String   @id @default(uuid())
-  userId    String         // User-Referenz als String!
+  userId    String   // User-Verweis
   plan      String
   status    String   @default("active")
   createdAt DateTime @default(now())
@@ -19,7 +19,7 @@ model Subscription {
 
 model Invoice {
   id        String   @id @default(uuid())
-  userId    String         // User-Referenz als String!
+  userId    String   // User-Verweis
   amount    Float
   currency  String
   status    String   @default("pending")

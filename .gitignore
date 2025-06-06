@@ -147,6 +147,8 @@ build/
 # Environment Files
 .env
 .env.local
+.env.example
+.env.docker
 
 # Docker Artifacts
 apps/api/.dockerignore

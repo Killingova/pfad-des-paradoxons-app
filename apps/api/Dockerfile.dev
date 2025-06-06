@@ -1,0 +1,21 @@
+# ─── Development Dockerfile für API ──────────────
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Corepack aktivieren (empfohlen für pnpm)
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Arbeitsverzeichnis vorbereiten, nur Package-Dateien (für Layer-Cache)
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY apps/api/package.json ./apps/api/package.json
+
+# Abhängigkeiten installieren
+RUN pnpm install --frozen-lockfile
+
+# Im Compose wird der Quellcode per volume eingebunden (kein COPY src!)
+# ENTRYPOINT/Command übernimmt docker-compose.override.yml:
+#   command: pnpm --filter api run dev
+
+# Optional: Umsetzen, falls du ENV brauchst:
+# ENV NODE_ENV=development

@@ -10,7 +10,10 @@
     "lint": "eslint ./src --ext .ts,.tsx",
     "lint:fix": "eslint ./src --ext .ts,.tsx --fix",
     "format": "prettier --write ./src",
-    "test": "vitest"
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm lint && pnpm format && pnpm typecheck && pnpm test",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "react": "^18.3.0",
@@ -29,6 +32,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.9.0",
     "eslint-plugin-react": "^7.33.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.2.0",
     "typescript": "^5.4.5",
     "vite": "^5.4.19",

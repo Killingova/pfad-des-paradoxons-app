@@ -1,41 +1,65 @@
-version: "3.9"
+# ─── docker-compose.yml (Production) ──────────────────────────────────────────
 
 services:
+  # Auth-Datenbank (PostgreSQL)
   auth_db:
     image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: auth_db
     ports:
       - "5433:5432"
     volumes:
       - auth_data:/var/lib/postgresql/data
 
+  # Payments-Datenbank (PostgreSQL)
   payments_db:
     image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: payments_db
     ports:
       - "5434:5432"
     volumes:
       - payments_data:/var/lib/postgresql/data
 
+  # Content-Datenbank (PostgreSQL)
   content_db:
     image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: content_db
     ports:
       - "5435:5432"
     volumes:
       - content_data:/var/lib/postgresql/data
 
+  # Redis (Session/Cache)
   redis:
     image: redis:7-alpine
+    restart: always
     ports:
       - "6379:6379"
 
+  # Mailhog (SMTP-Testserver)
   mailhog:
     image: mailhog/mailhog
+    restart: always
     ports:
       - "8025:8025"
 
+  # API Backend (Production-Build)
   api:
     build:
-      context: .
+      context: . 
       dockerfile: apps/api/Dockerfile
+    restart: always
     ports:
       - "4000:4000"
     depends_on:
@@ -43,14 +67,15 @@ services:
       - payments_db
       - content_db
       - redis
-    environment:
-      NODE_ENV: production
+    env_file:
+      - .env.docker
 
+  # Web Frontend (Production-Build)
   web:
     build:
       context: ./apps/web
-      # wenn du dort ein eigenes Dockerfile nutzt, kannst du es angeben:
-      # dockerfile: Dockerfile
+      dockerfile: Dockerfile
+    restart: always
     ports:
       - "5173:80"
     depends_on:
@@ -58,8 +83,10 @@ services:
     environment:
       VITE_API_URL: http://api:4000
 
+  # NGINX Reverse Proxy (optional, TLS termination)
   nginx:
     image: nginx:alpine
+    restart: always
     ports:
       - "80:80"
       - "443:443"

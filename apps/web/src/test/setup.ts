@@ -1,3 +1,2 @@
-// apps/web/src/setupTests.ts
-
+// apps/web/src/test/setup.ts
 import '@testing-library/jest-dom'
