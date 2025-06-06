@@ -5,21 +5,21 @@ WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Monorepo-Metadaten und Locks zuerst für Layer-Cache!
+# Locks für Layer-Cache!
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 COPY apps/api/package.json apps/api/tsconfig.json ./apps/api/
 COPY prisma ./prisma
 
-# Husky/Prepare deaktivieren für Production-Builds (schneller & fehlerfrei)
+# prepare-Hook ausschalten (kein Husky im Container nötig)
 RUN pnpm pkg set scripts.prepare=":"
 
-# Production-Dependencies für api (und dessen deps) installieren
-RUN pnpm install --filter api... --prod
+# ALLE Dependencies für den Build (auch TypeScript & Tools)
+RUN pnpm install
 
-# Quellcode erst danach kopieren für optimalen Build-Cache!
+# Quellcode kopieren für optimale Layer-Cache-Nutzung
 COPY apps/api ./apps/api
 
-# TypeScript build
+# TypeScript build (jetzt ist tsc verfügbar)
 RUN pnpm --filter api run build
 
 # Prisma-Clients für alle Schemas generieren
